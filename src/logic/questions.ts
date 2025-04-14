@@ -37,7 +37,7 @@ export const questions: { [key: string]: Question } = {
     text: '素早さや頭の良さ、どちらが大事だと思いますか？',
     next: {
       '頭の良さ': 'witch', // 魔法使い
-      '素早さ': 'thief' // 盗賊
+      '素早さ': 'phantom thief' // 怪盗
     }
   },
   q3a: {

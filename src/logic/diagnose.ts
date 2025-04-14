@@ -32,8 +32,8 @@ export const diagnoseMap: DiagnoseMap = {
     keywords: ['話し上手', '現実的', '柔軟思考'],
     image: '/images/merchant.png'
   },
-  'thief': {
-    title: '盗賊',
+  'phantom thief': {
+    title: '怪盗',
     description: '自由を愛する個性派。ルールに縛られるのは苦手で、自分らしく動くのが得意なひらめき人間',
     keywords: ['自由人', '直感型', 'マイペース'],
     image: '/images/thief.png'
