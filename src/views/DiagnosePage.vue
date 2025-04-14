@@ -2,6 +2,8 @@
   <div class="diagnose-page">
     <Loading v-if="isLoading" />
 
+    <Top v-if="!isDiagnosisStarted" @start="startDiagnosis" />
+
     <!-- 質問画面 -->
     <Question
       v-else-if="currentQuestion"
@@ -22,19 +24,25 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useDiagnoseStore } from '@/stores/diagnoseStore'
+import Top from '@/components/Top.vue'
 import Loading from '@/components/Loading.vue'
 import Result from '@/components/Result.vue'
 import Question from '@/components/Question.vue'
 
 // ストア
 const diagnoseStore = useDiagnoseStore()
-
+const isDiagnosisStarted = computed(() => diagnoseStore.isDiagnosisStarted);
 const currentQuestion = computed(() => diagnoseStore.currentQuestion)
 const resultData = computed(() => diagnoseStore.resultData)
 const isLoading = computed(() => diagnoseStore.isLoading)
 const choiceTexts = computed(() =>
   currentQuestion.value?.next ? Object.keys(currentQuestion.value.next) : []
 )
+
+const startDiagnosis = () => {
+  console.log('診断スタートが呼び出されました'); // デバッグ用
+  diagnoseStore.startDiagnosis();
+}
 
 const answer = async (choice: string) => {
   await diagnoseStore.answer(choice)

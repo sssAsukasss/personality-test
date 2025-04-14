@@ -7,7 +7,8 @@ export const useDiagnoseStore = defineStore('diagnose', {
     currentKey: 'start',  // 現在の質問のキー
     answers: [] as { key: string, choice: string }[], // 選んだ選択肢
     result: null as string | null, // 診断結果
-    isLoading: false
+    isLoading: false,
+    isDiagnosisStarted: false // 診断が開始されたかどうか
   }),
   getters: {
     currentQuestion(state) {
@@ -21,6 +22,13 @@ export const useDiagnoseStore = defineStore('diagnose', {
     }
   },
   actions: {
+    // 診断開始処理
+    startDiagnosis() {
+      // 最初の質問を取得する処理を追加
+      this.isDiagnosisStarted = true;
+      this.currentKey = 'start'; // ここで最初の質問を設定
+    },
+    
     async answer(choiceText: string) {
       const next = this.currentQuestion?.next?.[choiceText] || null;
       console.log('currentKey:', this.currentKey); // 現在の質問キー
@@ -51,6 +59,7 @@ export const useDiagnoseStore = defineStore('diagnose', {
       this.answers = [];
       this.result = null;
       this.isLoading = false;
+      this.isDiagnosisStarted = false; // 診断をリセット
     }
   }
 });
