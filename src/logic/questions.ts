@@ -1,4 +1,10 @@
-export const questions = {
+export interface Question {
+  text: string;
+  next: { [choice: string]: string | null };
+}
+
+
+export const questions: { [key: string]: Question } = {
   start: {
     text: 'どんなタイプの冒険者になりたいですか？',
     next: {
@@ -30,7 +36,7 @@ export const questions = {
   q2b: {
     text: '素早さや頭の良さ、どちらが大事だと思いますか？',
     next: {
-      '頭の良さ': 'mage', // 魔法使い
+      '頭の良さ': 'witch', // 魔法使い
       '素早さ': 'thief' // 盗賊
     }
   },
