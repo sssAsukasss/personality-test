@@ -5,6 +5,6 @@
 </template>
 
 <script setup>
-import DiagnosePage from './views/DiagnosePage.vue'
+import DiagnosePage from './components/DiagnosePage.vue'
 </script>
 
