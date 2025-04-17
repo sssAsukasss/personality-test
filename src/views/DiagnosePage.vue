@@ -2,20 +2,16 @@
   <div class="diagnose-page">
     <Loading v-if="isLoading" />
 
-    <Top v-if="!isDiagnosisStarted" @start="startDiagnosis" />
+    <Top v-if="!isDiagnosisStarted" />
 
     <!-- 質問画面 -->
     <Question
       v-else-if="currentQuestion"
-      :currentQuestion="currentQuestion"
-      :choiceTexts="choiceTexts"
-      @answer="answer"
     />
 
     <!-- 結果画面 -->
     <Result
       v-else-if="resultData"
-      :resultData="resultData"
     />
   </div>
 </template>
@@ -34,17 +30,7 @@ const isDiagnosisStarted = computed(() => diagnoseStore.isDiagnosisStarted);
 const currentQuestion = computed(() => diagnoseStore.currentQuestion)
 const resultData = computed(() => diagnoseStore.resultData)
 const isLoading = computed(() => diagnoseStore.isLoading)
-const choiceTexts = computed(() =>
-  currentQuestion.value?.next ? Object.keys(currentQuestion.value.next) : []
-)
 
-const startDiagnosis = (): void => {
-  diagnoseStore.startDiagnosis();
-}
-
-const answer = async (choice: string) => {
-  await diagnoseStore.answer(choice)
-}
 
 </script>
 
@@ -52,6 +38,8 @@ const answer = async (choice: string) => {
 .diagnose-page {
   padding: 20px;
   max-width: 800px;
-  margin: 0 auto;
+  margin: 0 auto; 
 }
+
+
 </style>

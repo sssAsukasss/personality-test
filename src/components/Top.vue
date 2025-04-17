@@ -1,9 +1,18 @@
 <template>
   <div class="top-page">
     <h1>Fantasy Occupation Diagnosis</h1>
-    <button @click="$emit('start')">診断スタート</button>
+    <button @click=startDiagnosis>診断スタート</button>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useDiagnoseStore } from '@/stores/diagnoseStore'
+
+const startDiagnosis = () => {
+  useDiagnoseStore().startDiagnosis()
+}
+
+</script>
 
 
 <style scoped lang="scss">
@@ -30,7 +39,7 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    
+
     &:hover {
       background-color: #1abc9c; 
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
