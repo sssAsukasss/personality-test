@@ -1,7 +1,7 @@
 <template>
   <div v-if="isLoading" class="loading-overlay">
     <div class="loading-spinner"></div>
-    <p class="loading-text">診断結果を読み込んでいます...</p>
+    <p>診断結果を読み込んでいます...</p>
   </div>
 </template>
 
@@ -9,8 +9,7 @@
 import { computed } from 'vue'
 import { useDiagnoseStore } from '@/stores/diagnoseStore'
 
-const diagnoseStore = useDiagnoseStore()
-const isLoading = computed(() => diagnoseStore.isLoading)
+const isLoading = computed(() => useDiagnoseStore().isLoading)
 </script>
 
 <style scoped lang="scss">
@@ -36,7 +35,7 @@ const isLoading = computed(() => diagnoseStore.isLoading)
     animation: spin 2s linear infinite;
   }
 
-  .loading-text {
+  p {
     color: white;
     font-size: 1.2rem;
     margin-top: 10px;

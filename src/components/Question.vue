@@ -1,23 +1,17 @@
 <template>
   <div v-if="currentQuestion" class="question-container">
-    <h2 class="question-text">{{ currentQuestion.text }}</h2>
+    <h2>{{ currentQuestion.text }}</h2>
 
     <div v-if="!isLoading" class="choices">
       <button
         v-for="(choice, index) in choices"
         :key="index"
         @click="handleChoice(choice)"
-        class="choice-button"
       >
         {{ choice }}
       </button>
     </div>
 
-    <div v-else class="loading">Loading...</div>
-  </div>
-
-  <div v-else>
-    <p>診断結果を表示しています...</p>
   </div>
 </template>
 
@@ -25,18 +19,16 @@
 import { computed } from 'vue'
 import { useDiagnoseStore } from '@/stores/diagnoseStore'
 
-const diagnoseStore = useDiagnoseStore()
-
-const currentQuestion = computed(() => diagnoseStore.currentQuestion)
+const currentQuestion = computed(() => useDiagnoseStore().currentQuestion)
 
 const choices = computed(() =>
   currentQuestion.value ? Object.keys(currentQuestion.value.next) : []
 )
 
-const isLoading = computed(() => diagnoseStore.isLoading)
+const isLoading = computed(() => useDiagnoseStore().isLoading)
 
 const handleChoice = async (choice: string) => {
-  await diagnoseStore.answer(choice)
+  await useDiagnoseStore().answer(choice)
 }
 </script>
 
@@ -45,7 +37,7 @@ const handleChoice = async (choice: string) => {
   text-align: center;
   margin: 20px;
 
-  .question-text {
+  h2 {
     font-size: 1.5rem;
     margin-bottom: 20px;
   }
@@ -55,7 +47,7 @@ const handleChoice = async (choice: string) => {
     flex-direction: column;
     align-items: center;
 
-    .choice-button {
+    button {
       background-color: #007bff;
       color: white;
       padding: 10px;
@@ -69,11 +61,6 @@ const handleChoice = async (choice: string) => {
         background-color: #0056b3;
       }
     }
-  }
-
-  .loading {
-    font-size: 1.2rem;
-    color: #888;
   }
 }
 </style>

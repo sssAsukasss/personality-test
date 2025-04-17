@@ -8,6 +8,3 @@
 import DiagnosePage from './views/DiagnosePage.vue'
 </script>
 
-<style>
-/* 必要に応じてスタイルを追加 */
-</style>

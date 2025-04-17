@@ -1,7 +1,7 @@
 <template>
   <div v-if="resultData" class="result-container">
-    <h2 class="result-title">{{ resultData.title }}</h2>
-    <p class="result-description">{{ resultData.description }}</p>
+    <h2>{{ resultData.title }}</h2>
+    <p>{{ resultData.description }}</p>
 
     <div class="result-keywords">
       <h3>キーワード:</h3>
@@ -13,18 +13,20 @@
     </div>
 
     <div v-if="resultData.image" class="result-image">
-      <img :src="resultData.image" alt="Result Image" />
+      <img :src="resultData.image" :alt="`${resultData.title}の画像`" />
     </div>
 
     <div class="social-share">
       <h3>結果をシェアする</h3>
       <div class="share-buttons">
         <a
-          :href="`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`"
+          :href="twitterShareUrl"
           target="_blank"
           class="share-button twitter"
         >
-          Twitterでシェア
+        <img src="/public/images/icons/x.png
+        " alt="Twitterアイコン" class="icon" />
+          でシェア
         </a>
         <a
           :href="lineShareUrl"
@@ -39,51 +41,51 @@
     <button @click="restart" class="restart-button">診断をやり直す</button>
   </div>
 
-  <div v-else>
-    <p>結果を読み込んでいます...</p>
-  </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useDiagnoseStore } from '@/stores/diagnoseStore'
 
-const diagnoseStore = useDiagnoseStore()
+const resultData = computed(() => useDiagnoseStore().resultData)
 
-const resultData = computed(() => diagnoseStore.resultData)
+const encodedShareText = computed(() => {
+  return encodeURIComponent(`${resultData.value?.title}の診断結果: ${resultData.value?.description} #診断 #冒険者タイプ`)
+})
 
-const tweetText = computed(() => {
-  return `${resultData.value?.title}の診断結果: ${resultData.value?.description} #診断 #冒険者タイプ`
+const twitterShareUrl = computed(() => {
+  return `https://twitter.com/intent/tweet?text=${encodedShareText.value}`
 })
 
 const lineShareUrl = computed(() => {
-  const baseUrl = 'https://line.me/R/msg/text/?'
-  const message = encodeURIComponent(tweetText.value)
-  return `${baseUrl}${message}`
+  return`https://line.me/R/msg/text/?${encodedShareText.value}`
 })
 
 const restart = () => {
-  diagnoseStore.restart()
+  useDiagnoseStore().restart()
 }
+
 </script>
 
 <style lang="scss" scoped>
 .result-container {
   text-align: center;
   margin: 20px;
+
+  h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #555;
+  }
 }
 
-.result-title {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
 
-.result-description {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-  color: #555;
-}
 
 .result-keywords {
   margin-bottom: 20px;
@@ -105,24 +107,36 @@ const restart = () => {
 }
 
 .result-image img {
-  max-width: 100%;
-  height: auto;
+  width: 400px;
+  height: 400px;
+  object-fit: contain;
   margin-top: 20px;
-  border-radius: 8px;
+
+  @media (max-width: 768px) {
+    width: 200px;
+    height: 200px;
+  }
 }
 
 .restart-button {
-  background-color: #28a745;
-  color: white;
+  background-color: #ff5722;
+  color: #fff;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1.2rem;
   margin-top: 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 
   &:hover {
-    background-color: #218838;
+    background-color: #e64a19;
+    transform: scale(1.05); 
+  }
+
+  &:active {
+    background-color: #d84315; 
+    transform: scale(0.95); 
   }
 }
 
@@ -145,15 +159,23 @@ const restart = () => {
     cursor: pointer;
 
     &.twitter {
-      background-color: #1da1f2;
+      background-color: #0F1419;
     }
 
     &.line {
       background-color: #00c300;
     }
 
+    
     &:hover {
       opacity: 0.8;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      margin-right: 5px;
     }
   }
 }
